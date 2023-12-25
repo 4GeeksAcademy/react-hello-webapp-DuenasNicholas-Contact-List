@@ -1,45 +1,77 @@
-const getState = ({ getStore, getActions, setStore }) => {
+const getStewp = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			demo: [
-				{
-					title: "FIRST",
-					background: "white",
-					initial: "white"
-				},
-				{
-					title: "SECOND",
-					background: "white",
-					initial: "white"
-				}
+			contactList: [
+				
 			]
+
 		},
 		actions: {
-			// Use getActions to call a function within a fuction
-			exampleFunction: () => {
-				getActions().changeColor(0, "green");
-			},
-			loadSomeData: () => {
-				/**
-					fetch().then().then(data => setStore({ "foo": data.bar }))
-				*/
-			},
-			changeColor: (index, color) => {
-				//get the store
-				const store = getStore();
+			createContact: newContact => {
 
-				//we have to loop the entire demo array to look for the respective index
-				//and change its color
-				const demo = store.demo.map((elm, i) => {
-					if (i === index) elm.background = color;
-					return elm;
-				});
+				
+				let options = {
+					method:"POST",
+					body: JSON.stringify(newContact),
+					headers: {"Context-Type": "application/JSON"}
+				}
+				fetch("https://playground.4geeks.com/apis/fake/contact", options)
+				.then(respone=>{
+					if(!respone.ok)throw Error(respone.statusText);
+					return respone
+				})
+				.then(respone => console.log('successfully created', response))
+			},
+			addContact:(aNewContact)=>{
 
-				//reset the global store
-				setStore({ demo: demo });
+			const store = getStore();
+			let reviseStore = [...store.contactList, aNewContact];
+			getActions().createContact(aNewContact);
+				
+				setStore({contactList:reviseStore})
+			}, 
+			updateContact: async(contactId, full_name, email, phone, address) => {
+				const respone = await fetch("https://playground.4geeks.com/apis/fake/contact/"+ contactId,{
+					method:"PUT",
+					body: JSON.stringify({
+						full_name: full_name,
+						phone: phone,
+						email: email,
+						address: address,
+						agenda_slug: "nico_agenda",
+						
+					}),
+					headers: {"Context-Type": "application/JSON"}
+				})
+				const data = await respone.json()
+				setStore({contactList:[...getStore().contactList,data]})
 			}
-		}
+			},
+			deleteContact: async(contactId) => {
+			const respone = await fetch("https://playground.4geeks.com/apis/fake/contact"+ contactId,{
+					method:"DELETE",
+					
+					headers: {"Context-Type": "application/JSON"}
+				})
+				const data = await respone.json()
+				setStore({contactList:store.contactList.filter((contact)=> contact.id !== contactId )})
+			},
+			getContacts: async() => {
+				const respone = await fetch ("https://playground.4geeks.com/apis/fake/contact/nico_agenda" ) 
+				const data = await respone.json()
+				setStore({contactList:data})
+			},
+			saveContact: (name, address, phone, email) => {
+				let newContact = {
+					name: name,
+					email: email,
+					phone: phone,
+					address: address,
+					agenda_slug:"nico_agenda"
+				}
+				getActions().addContact(newContact)
+			}
 	};
 };
 
-export default getState;
+export default getStewp;
