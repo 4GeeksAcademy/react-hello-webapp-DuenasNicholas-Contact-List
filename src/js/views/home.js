@@ -17,7 +17,8 @@ export const Home = () => {
 				return(<li key={index}> <ContactCard contact = {contact} index = {index}/>  </li>)
 			})}
 		</ul>
-			<button className="btn btn-primary btn-lg" href="#" role="button"> <Link to={"/addContact"}>link </Link>ADD CONTACT</button>
+		<div><Link className="btn btn-primary btn-lg ml-auto mt-5" to={"/addContact"}>Add New  Contact</Link></div>
+			
 	</div>
 	</div>
 	<button ></button>

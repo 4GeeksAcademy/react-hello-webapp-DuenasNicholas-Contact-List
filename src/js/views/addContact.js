@@ -1,53 +1,43 @@
 import React, { useState, useEffect, useContext } from "react";
-import PropTypes from "prop-types";
-import { Link, useParams, useNaviagte } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 
-export const Single = () => {
+
+export const AddContact = (props) => {
 	const { store, actions } = useContext(Context);
-	const [name, setName] = useState('')
-	const [email, setEmail] = useState('')
-	const [address, setAddress] = useState('')
-	const [phone, setPhone] = useState('')
-	let navigate = useNaviagte()
-	const submitContact =(e)=>{
-		e.preventDefault()
-		console.log(name, email, address, phone)
-		actions.saveContact(name, email, address, phone)
-		setName('')
-		setEmail('')
-		setAddress('')
-		setPhone('')
-		navigate('/')
-	}
+	const params = useParams();
+	const [fullName, setFullName] = useState("");
+	const [email, setEmail] = useState("");
+	const [phone, setPhone] = useState("");
+	const [address, setAddress] = useState("");
+	const navigate = useNavigate();
+
+	const handleClick = async () => {
+		await actions.addContact(fullName, email, phone, address);
+		navigate("/");
+	};
+
 	return (
-		<div className="jumbotron">
-			<div class="mb-3">
-				<h1>Add a New Contact</h1>
-				<label for="formGroupExampleInput" class="form-label">Full Name</label>
-				<input value={name} onChange={(e) => setName(e.target.value)} type="text" class="form-control" id="formGroupExampleInput" placeholder="Example input placeholder" />
+		<div className="addContactCard">
+			<div className="w-50 col-4 mx-auto mb-3">
+				<label className="form-label" htmlFor="name">Full Name</label>
+				<input className="form-control" onChange={(e) => setFullName(e.target.value)} type="text" id="name" name="name" placeholder="Full Name" />
 			</div>
-			<div class="mb-3">
-				<label for="formGroupExampleInput2" class="form-label">Email</label>
-				<input value={email} onChange={(e) => setEmail(e.target.value)} type="text" class="form-control" id="formGroupExampleInput2" placeholder="Another input placeholder" />
+			
+			<div className="w-50 col-4 mx-auto mb-3">
+				<label className="form-label" htmlFor="email">Email</label>
+				<input className="form-control" onChange={(e) => setEmail(e.target.value)} type="text" id="email" name="email" placeholder="Email" />
 			</div>
-			<div class="mb-3">
-				<label for="formGroupExampleInput" class="form-label">Phone</label>
-				<input value={address} onChange={(e) => setAddress(e.target.value)} type="text" class="form-control" id="formGroupExampleInput" placeholder="Example input placeholder" />
+			<div className="w-50 col-4 mx-auto mb-3">
+				<label className="form-label" htmlFor="phone">phone</label>
+				<input className="form-control" onChange={(e) => setPhone(e.target.value)} type="text" id="phone" name="phone" placeholder="phone" />
 			</div>
-			<div class="mb-3">
-				<label for="formGroupExampleInput2" class="form-label">Address</label>
-				<input value={phone} onChange={(e) => setPhone(e.target.value)} type="text" class="form-control" id="formGroupExampleInput2" placeholder="Another input placeholder" />
+			<div className="w-50 col-4 mx-auto mb-3">
+				<label className="form-label" htmlFor="address">address</label>
+				<input className="form-control" onChange={(e) => setAddress(e.target.value)} type="text" id="address" name="address" placeholder="address" />
 			</div>
-
-			<hr className="my-4" />
-
-			<Link to="/">
-				<span className="btn btn-primary btn-lg" href="#" role="button">
-					Back home
-				</span>
-			</Link>
-			<button className="btn btn-primary btn-lg" href="#" role="button" onClick={(e)=> submitContact(e)} >Add new contact</button>
+			<button onClick={handleClick} className="btn btn-primary form-control">save</button>
 		</div>
+
 	);
 };

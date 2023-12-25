@@ -1,23 +1,35 @@
-import React, { } from "react";
+import  React,{useContext} from 'react';
+import { useNavigate } from 'react-router';
+import { Context } from "../store/appContext";
+import { stringify } from 'query-string';
 
-export const ContactCard = ({ contact, index }) => (
+export const ContactCard = ({contact}) => {
+  const {store, actions} = useContext(Context);
+  const contactId = contact.id;
+  const contactIdString = contactId.toString();
+  const navigate = useNavigate();
+  console.log(contactIdString);
+  const handleClick = () => {
+    navigate("/edit/"+contactIdString);
+  };
 
-  <div className="card mb-3" style={{ maxWidth: "540px" }}>
-    <div className="row g-0">
-      <div className="col-md-4">
-        <img src="https://xsgames.co/randomusers/avatar.php?g=male" />
-      </div>
-      <div className="col-md-8">
-        <div className="card-body">
-          <h5 className="card-title">{contact.full_name}</h5>
-          <p className="card-text">{contact.address}</p>
-          <p className="card-text">{contact.phone}</p>
-          <p className="card-text">{contact.email}</p>
-
+    return (
+        <div className="card mb-3" style={{maxWidth:"100%"}}>
+        <div className="row g-0">
+          <div className="col-md-4">
+            <img src="https://i.ibb.co/7J5cXcS/miguel-angel-hernandez-c-Obu-Sxlc-Uac-unsplash.jpg" className="img-fluid rounded-start" alt="..."/>
+          </div>
+          <div className="col-md-8">
+            <div className="card-body">
+              <h3 className="card-title">{contact.full_name}</h3>
+              <p className="card-text fs-3">{contact.email}</p>
+              <p className="card-text fs-3">{contact.phone}</p>
+              <p className="card-text fs-3">{contact.address}</p>
+              <button className="btn btn-secondary" onClick={handleClick} >Edit Contact</button>
+              <button className="btn btn-danger" onClick={() => actions.deleteContact(contact.id) }>Delete Contact</button>
+            </div>
+          </div>
         </div>
       </div>
-      
-    </div>
-  </div>
-
-);
+    );
+};
