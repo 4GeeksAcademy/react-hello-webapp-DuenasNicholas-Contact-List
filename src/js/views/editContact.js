@@ -13,7 +13,8 @@ export const EditContact = (props) => {
 	const [contact, setContact] = useState({});
 
 	const handleClick = async () => {
-		await actions.updateContact(fullName, email, phone, address, id);
+		await actions.updateContact(id, fullName, email, phone, address);
+		// window.location.reload(false);
 		navigate("/");
 		console.log(store);
 	};

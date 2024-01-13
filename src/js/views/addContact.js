@@ -5,7 +5,7 @@ import { Context } from "../store/appContext";
 
 export const AddContact = (props) => {
 	const { store, actions } = useContext(Context);
-	const params = useParams();
+	// const params = useParams();
 	const [fullName, setFullName] = useState("");
 	const [email, setEmail] = useState("");
 	const [phone, setPhone] = useState("");
@@ -13,7 +13,7 @@ export const AddContact = (props) => {
 	const navigate = useNavigate();
 
 	const handleClick = async () => {
-		await actions.addContact(fullName, email, phone, address);
+		await actions.createContact(fullName, email, phone, address);
 		navigate("/");
 	};
 

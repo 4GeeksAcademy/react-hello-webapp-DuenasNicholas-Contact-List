@@ -12,7 +12,10 @@ export const ContactCard = ({contact}) => {
   const handleClick = () => {
     navigate("/edit/"+contactIdString);
   };
-
+  const handleDelete = () => {
+     actions.deleteContact(contact.id);
+     window.location.reload(false);
+  }
     return (
         <div className="card mb-3" style={{maxWidth:"100%"}}>
         <div className="row g-0">
@@ -26,7 +29,7 @@ export const ContactCard = ({contact}) => {
               <p className="card-text fs-3">{contact.phone}</p>
               <p className="card-text fs-3">{contact.address}</p>
               <button className="btn btn-secondary" onClick={handleClick} >Edit Contact</button>
-              <button className="btn btn-danger" onClick={() => actions.deleteContact(contact.id) }>Delete Contact</button>
+              <button className="btn btn-danger" onClick={() => handleDelete() }>Delete Contact</button>
             </div>
           </div>
         </div>
